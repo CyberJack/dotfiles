@@ -1,0 +1,17 @@
+###
+# Jetbrains applications
+###
+.idea/
+
+###
+# MacOS
+###
+.DS_Store
+.AppleDouble
+.LSOverride
+
+###
+# Local Docksal settings
+###
+.docksal/docksal-local.env
+.docksal/docksal-local.yml
