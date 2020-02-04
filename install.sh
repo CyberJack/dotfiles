@@ -87,7 +87,7 @@ function postProcess {
 
 function addGitUserSection {
     info "Adding [user] section to git configuration"
-    echo -e "[user]\n    name = ${INSTALL_GIT_USER}\n    email = ${INSTALL_GIT_EMAIL}\n\n$(cat "${HOME}"/.gitconfig)" > "${HOME}"/.gitconfig
+    echo -e "[user]\n    name = ${INSTALL_GIT_USER}\n    email = ${INSTALL_GIT_EMAIL}\n" | cat - "${HOME}"/.gitconfig > /tmp/installer_$$ && mv /tmp/installer_$$ "${HOME}"/.gitconfig
 }
 
 checkIfTermSupportsColors
