@@ -5,7 +5,14 @@
 **Warning:** If you want to give these dotfiles a try, you should first fork this repository, review the code, and remove things you don’t want or need.
 Don’t blindly use my settings unless you know what that entails. Use at your own risk!
 
-You can clone this repository or download and extact a archived version. Run the `install.sh` script from the project directory to install these dotfiles.
+You can clone this repository or download and extact a archived version.
+ 
+To install perform the following steps:
+
+* Copy `.env.dist` to `.env` and add your global git username and email address **(optional)**
+* Run `install.sh` script from the project directory.
+
+After installation restart your terminal or start a new ZSH session.
 
 ### Requirements
 
@@ -22,14 +29,11 @@ These dotfiles require some applications to be installed.
 * zip & unzip
 * midnight-commander
 
-
 *Macos*
 
 * brew
 
-
-
-### Update
+## Update
 
 To update the dotfiles, update the repository (or download and extract a newer archived version) and run the `install.sh` script again.
 

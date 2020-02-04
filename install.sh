@@ -60,6 +60,8 @@ function sync {
     info "Installing dotfiles"
     rsync -avhq \
         --no-perms \
+        --exclude ".env" \
+        --exclude ".env.dist" \
         --exclude ".git/" \
         --exclude ".gitignore" \
         --exclude "install.sh" \
@@ -71,8 +73,26 @@ function sync {
     info "Dotfiles have been installed.\nRestart your terminal or (re)start ZSH and enjoy!"
 }
 
+function postProcess {
+    if [[ -f ".env" ]]; then
+        set -o allexport
+        source ".env"
+        set +o allexport
+
+        if [[ -n "${INSTALL_GIT_USER}" && -n "${INSTALL_GIT_EMAIL}" ]]; then
+            addGitUserSection
+        fi
+    fi
+}
+
+function addGitUserSection {
+    info "Adding [user] section to git configuration"
+    echo -e "[user]\n    name = ${INSTALL_GIT_USER}\n    email = ${INSTALL_GIT_EMAIL}\n\n$(cat "${HOME}"/.gitconfig)" > "${HOME}"/.gitconfig
+}
+
 checkIfTermSupportsColors
 header
 checkRequirements
 checkForcedInstall "${1:-false}"
 sync
+postProcess
