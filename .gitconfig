@@ -5,6 +5,15 @@
     # View the current working tree status using the short format
     s = status -s
 
+    # Switch to another branch
+    sw = switch
+
+    # Switch local branch using fzf
+    sl = !"git switch $(git --no-pager branch -vv | fzf -m | awk '{print $1}' | sed \"s/.* //\")"
+
+    # Switch local and remote branch using fzf
+    sr = !"git switch $(git branch --all | grep -v HEAD | fzf +m | awk '{print $1}' | sed \"s#remotes/[^/]*/##\" | sed \"s/.* //\")"
+
     # Show the diff between the latest commit and the current state
     d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
 
@@ -21,7 +30,7 @@
     ca = !git add -A && git commit -av
 
     # Switch to a branch, creating it if necessary
-    go = "!f() { git switch \"$1\" 2> /dev/null || git switch -c \"$1\"; }; f"
+    # go = "!f() { git switch \"$1\" 2> /dev/null || git switch -c \"$1\"; }; f"
 
     # Show verbose output about tags, branches or remotes
     tags = tag -l
@@ -64,6 +73,12 @@
 
     # List contributors with number of commits
     contributors = shortlog --summary --numbered
+
+    # Update remote and prune
+    prune = "!f() { git remote update origin --prune }; f"
+
+    # Cleanup old branched
+    cleanup = "!git prune && git dm"
 
 [apply]
     # Detect whitespace errors when applying a patch
@@ -132,6 +147,9 @@
     # Include summaries of merged commits in newly created merge commit messages
     log = true
 
+[pull]
+    rebase = true
+
 [push]
     # https://git-scm.com/docs/git-config#git-config-pushdefault
     default = simple
@@ -142,10 +160,10 @@
 [rerere]
     # Reuse recorded resolution of conflicted merges
     # https://git-scm.com/docs/git-rerere
-    enabled = true
+	enabled = true
 
 [lfs]
-    locksverify = true
+	locksverify = true
 
 [filter "lfs"]
     process = git-lfs filter-process
@@ -177,4 +195,3 @@
 
 [url "git://gitlab.com/"]
     insteadOf = "gitlab:"
-
