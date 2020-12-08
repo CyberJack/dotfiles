@@ -123,10 +123,13 @@ if has("gui_macvim")
     autocmd GUIEnter * set vb t_vb=
 endif
 
-
 " Add a bit extra margin to the left
 set foldcolumn=1
 
+" Fix clipboard settings for MacOS
+if system('uname -s') == "Darwin\n"
+  set clipboard=unnamed
+endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
