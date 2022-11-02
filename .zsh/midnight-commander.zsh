@@ -1,7 +1,9 @@
 #---[ Midnight Commander settings ]-------------------------------------
 
 # Allow Midnight Commander to quit into last used directory
-if [[ -d "/usr/local/Cellar/midnight-commander" ]]; then
+if [[ -d "/opt/homebrew/Cellar" ]]; then
+    . /opt/homebrew/Cellar/midnight-commander/**/libexec/mc/mc.sh
+elif [[ -d "/usr/local/Cellar/midnight-commander" ]]; then
     . /usr/local/Cellar/midnight-commander/**/libexec/mc/mc.sh
 elif [[ -f "/usr/local/mc/share/mc/bin/mc.sh" ]]; then
     . /usr/local/mc/share/mc/bin/mc.sh

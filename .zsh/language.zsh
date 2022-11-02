@@ -1,7 +1,7 @@
 #---[ Language and timezone settings ]----------------------------------
 
 # timezone
-export TZ="Europe/Amsterdam"
+export TZ="Europe/Brussels"
 
 # language
 export LC_ALL='en_US.UTF-8'

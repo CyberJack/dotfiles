@@ -1,2 +1,10 @@
 /.idea/
 /.env
+/.cache/
+/.local/
+/.config/
+
+/.zsh_history
+/.zcompdump
+*.zwc
+*.zwc.old
