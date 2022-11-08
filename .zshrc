@@ -3,9 +3,9 @@
 
 # Start profiler
 if [[ "${ZSH_PROFILE}" == 1 ]]; then
-    zmodload zsh/zprof
+  zmodload zsh/zprof
 else
-    ZSH_PROFILE=0
+  ZSH_PROFILE=0
 fi
 
 # Zinit {{{
@@ -51,8 +51,10 @@ zinit snippet PZT::modules/terminal/init.zsh
 zinit ice lucid atload"unalias gcd"
 zinit snippet OMZP::git
 
-zinit ice depth=1 atload'!source ~/.p10k.zsh'
-zinit light romkatv/powerlevel10k
+zinit ice from"gh-r" as"program" \
+  cp"posh-* -> oh-my-posh" \
+  pick"oh-my-posh"
+zinit light JanDeDobbeleer/oh-my-posh
 
 zinit ice wait'0' blockf lucid
 zinit light zsh-users/zsh-completions
@@ -107,13 +109,13 @@ done
 if type "cowsay" > /dev/null; then
   if type "fortune" > /dev/null; then
     if type "clear" > /dev/null; then
-		clear
-	fi
+      clear
+    fi
 	
-	fortune -s | cowsay -W 80 -f moose -y
-	echo -e "${red}Host:\t\t\t${cyan} $HOSTNAME";
-	echo -ne "${red}Today is:\t\t${cyan}" `date`; echo ""
-	echo -e "${red}Kernel Information: \t${cyan}" `uname -smr`
-	echo -ne "${red}Uptime is: \t${cyan}";upinfo;echo ""  
+    fortune -s | cowsay -W 80 -f moose -y
+    echo -e "${red}Host:\t\t\t${cyan} $HOSTNAME";
+    echo -ne "${red}Today is:\t\t${cyan}" `date`; echo ""
+    echo -e "${red}Kernel Information: \t${cyan}" `uname -smr`
+    echo -ne "${red}Uptime is: \t${cyan}"; upinfo; echo ""
   fi
 fi
