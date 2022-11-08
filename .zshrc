@@ -51,6 +51,8 @@ zinit snippet PZT::modules/terminal/init.zsh
 zinit ice lucid atload"unalias gcd"
 zinit snippet OMZP::git
 
+zinit snippet OMZP::z
+
 zinit ice from"gh-r" as"program" \
   cp"posh-* -> oh-my-posh" \
   pick"oh-my-posh"
