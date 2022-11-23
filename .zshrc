@@ -34,9 +34,9 @@ zinit snippet PZTM::utility
 
 zinit ice wait'1' lucid; zinit snippet PZT::modules/directory/init.zsh
 zinit snippet PZT::modules/history/init.zsh
-zinit snippet PZT::modules/completion/init.zsh
 zinit snippet PZT::modules/osx/init.zsh
 zinit snippet PZT::modules/gpg/init.zsh
+zinit snippet PZT::modules/command-not-found/init.zsh
 
 zstyle ':prezto:module:editor' dot-expansion 'yes'
 zstyle ':prezto:module:editor' key-bindings 'vi'
@@ -58,8 +58,13 @@ zinit ice from"gh-r" as"program" \
   pick"oh-my-posh"
 zinit light JanDeDobbeleer/oh-my-posh
 
-zinit ice wait'0' blockf lucid
+#zinit ice wait'0' blockf lucid
+#zinit light zsh-users/zsh-completions
+zinit ice blockf atpull'zinit creinstall -q .'
 zinit light zsh-users/zsh-completions
+
+zinit light zdharma-continuum/fast-syntax-highlighting
+zinit light zsh-users/zsh-autosuggestions
 
 # https://github.com/zdharma-continuum/zinit-packages/tree/main/fzf
 zinit pack"bgn-binary+keys" for fzf
@@ -75,21 +80,12 @@ zinit load gnachman/iTerm2-shell-integration
 # https://github.com/zdharma-continuum/zinit-packages/tree/main/ls_colors
 zinit pack"no-color-swaps" for dircolors-material
 
-zinit wait lucid for \
-  atload"_zsh_autosuggest_start" zsh-users/zsh-autosuggestions \
-  atinit"zpcompinit;zpcdreplay" zdharma-continuum/fast-syntax-highlighting
+# Completion
+zinit snippet PZT::modules/completion/init.zsh
 
 # End Profiler
 if [[ "${ZSH_PROFILE}" == 1 ]]; then
   zprof | less
-fi
-
-autoload -Uz compinit
-
-if [ $(date +'%j') != $(date -r ${ZDOTDIR:-$HOME}/.zcompdump +'%j') ]; then
-  compinit;
-else
-  compinit -C;
 fi
 
 # FZF {{{
