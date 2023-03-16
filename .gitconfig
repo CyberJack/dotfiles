@@ -165,6 +165,10 @@
     # Reuse recorded resolution of conflicted merges
     # https://git-scm.com/docs/git-rerere
     enabled = true
+    
+[rebase]
+    # https://git-scm.com/docs/git-rebase#Documentation/git-rebase.txt---autostash
+    autoStash = true    
 
 [lfs]
     locksverify = true
