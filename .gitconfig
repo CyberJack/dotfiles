@@ -4,7 +4,7 @@
 
 [alias]
     # View abbreviated SHA, description, and history graph of the latest 20 commits
-    l = log --pretty=oneline -n 20 --graph --abbrev-commit
+    l = log --pretty=format:\"%C(magenta)%h%Creset - %C(cyan)%ad %Creset-%C(red)%d%Creset %s %C(green)(%cr) [%an]\" --abbrev-commit --graph --date=format:'%d-%m-%Y' -30
 
     # View the current working tree status using the short format
     s = status -s
@@ -38,7 +38,7 @@
 
     # Show verbose output about tags, branches or remotes
     tags = tag -l
-    branches = branch -a
+    branches = branch -a --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate
     remotes = remote -v
 
     # List aliases
@@ -73,7 +73,7 @@
     dm = "!git branch --merged | awk '{print($1)}' | grep -v '\\*\\|master\\|develop\\|acceptance' | xargs -n 1 git branch -d"
 
     # Publish a branch
-    publish = "!f() { git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD) }; f"
+    publish = !"git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)"
 
     # List contributors with number of commits
     contributors = shortlog --summary --numbered
@@ -135,6 +135,9 @@
     changed = green
     untracked = cyan
 
+[init]
+	defaultBranch = main
+
 [diff]
     # Detect copies as well as renames
     renames = copies
@@ -154,6 +157,10 @@
 [pull]
     rebase = true
 
+[rebase]
+    # https://git-scm.com/docs/git-rebase#Documentation/git-rebase.txt---autostash
+    autoStash = true
+
 [push]
     # https://git-scm.com/docs/git-config#git-config-pushdefault
     default = simple
@@ -161,14 +168,13 @@
     # Make `git push` push relevant annotated tags when pushing branches out.
     followTags = true
 
+    # Assume --set-upstream on default push when no upstream tracking exists.
+    autoSetupRemote = true
+
 [rerere]
     # Reuse recorded resolution of conflicted merges
     # https://git-scm.com/docs/git-rerere
     enabled = true
-    
-[rebase]
-    # https://git-scm.com/docs/git-rebase#Documentation/git-rebase.txt---autostash
-    autoStash = true    
 
 [lfs]
     locksverify = true
@@ -203,3 +209,6 @@
 
 [url "git://gitlab.com/"]
     insteadOf = "gitlab:"
+
+[protocol "file"]
+	allow = always
