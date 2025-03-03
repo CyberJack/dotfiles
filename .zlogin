@@ -21,8 +21,8 @@
     zrecompile -pq ${ZDOTDIR:-${HOME}}/.zshenv
 
     # recompile all zsh or sh
-    for f in $ZSHCONFIG/**/*.*sh
-    do
-        zrecompile -pq $f
-    done
+    #for f in $ZSHCONFIG/**/*.*sh
+    #do
+    #    zrecompile -pq $f
+    #done
 ) &!

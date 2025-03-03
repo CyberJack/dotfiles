@@ -1,119 +1,309 @@
-# vim:foldlevel=0
-# vim:foldmethod=marker
+# zmodload zsh/zprof
 
-# Start profiler
-if [[ "${ZSH_PROFILE}" == 1 ]]; then
-  zmodload zsh/zprof
-else
-  ZSH_PROFILE=0
+#
+# Zinit
+# 
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+if [[ ! -f ${ZINIT_HOME}/zinit.zsh ]]; then
+    mkdir -p "$(dirname $ZINIT_HOME)"
+    git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+
+    if [[ ! -d $(dirname $ZINIT_HOME)/polaris/bin ]]; then
+        mkdir -p $(dirname $ZINIT_HOME)/polaris/bin
+    fi
 fi
 
-# Zinit {{{
-ZINIT_HOME="${XDG_DATA_HOME:-${HOME:-~/.local/share}}/zinit"
+source "${ZINIT_HOME}/zinit.zsh"
 
-if [[ ! -d $ZINIT_HOME ]]; then
-  mkdir -p "$(dirname $ZINIT_HOME)"
-  git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME/repo"
-fi
+#autoload -Uz _zinit
+#(( ${+_comps} )) && _comps[zinit]=_zinit
 
-source "${ZINIT_HOME}/repo/zinit.zsh"
-
-autoload -Uz _zinit
-(( ${+_comps} )) && _comps[zinit]=_zinit
-
+# Load a few important annexes, without Turbo
+# (this is currently required for annexes)
 zinit light-mode for \
-    zdharma-continuum/zinit-annex-patch-dl \
+    zdharma-continuum/zinit-annex-as-monitor \
     zdharma-continuum/zinit-annex-bin-gem-node
-    
-# Prezto {{{
-zinit snippet PZT::modules/environment/init.zsh
-zinit snippet PZT::modules/gnu-utility/init.zsh
 
-zstyle ':prezto:module:utility' safe-ops 'no'
-zinit snippet PZTM::utility
+#
+# General settings
+#
+setopt auto_cd
+setopt auto_pushd
+setopt pushd_ignore_dups
+setopt pushdminus
 
-zinit ice wait'1' lucid; zinit snippet PZT::modules/directory/init.zsh
-zinit snippet PZT::modules/history/init.zsh
-zinit snippet PZT::modules/osx/init.zsh
-zinit snippet PZT::modules/gpg/init.zsh
-zinit snippet PZT::modules/command-not-found/init.zsh
+#
+# History
+#
+HISTFILE=$HOME/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+setopt append_history
+setopt extended_history
+setopt inc_append_history
+setopt hist_expire_dups_first
+setopt hist_ignore_dups
+setopt hist_ignore_space
+setopt inc_append_history
+setopt share_history
 
-zstyle ':prezto:module:editor' dot-expansion 'yes'
-zstyle ':prezto:module:editor' key-bindings 'vi'
-zstyle ':prezto:module:editor' ps-context 'yes'
-zstyle ':prezto:module:prompt' managed 'yes'
-zinit snippet PZTM::editor
+#
+# FZF
+#
+export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow --exclude .git --exclude .idea"
+export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
+export FZF_ALT_C_COMMAND="fd -t d ."
+export FZF_CTRL_T_OPTS="--preview '(bat --style=numbers,changes --wrap never --color always {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200' --bind '?:toggle-preview'"
+#export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:5:hidden:wrap --bind '?:toggle-preview' --bind 'ctrl-y:execute-silent(echo -n {2..} | xclip -selection clipboard)+abort' --color header:italic --header 'Press CTRL-Y to copy command into clipboard'"
+export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:5:hidden:wrap --bind '?:toggle-preview' --bind 'ctrl-y:execute-silent(echo -n {2..} | clip.exe)+abort' --color header:italic --header 'Press CTRL-Y to copy command into clipboard'"
 
-zstyle ':prezto:module:terminal' auto-title 'yes'
-zinit snippet PZT::modules/terminal/init.zsh
-# }}}
+#export FZF_CTRL_T_OPTS="--preview '(bat --style=numbers,changes --wrap never --color always {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200' --bind '?:toggle-preview'"
+#export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
 
-zinit ice lucid atload"unalias gcd"
-zinit snippet OMZP::git
+#export FZF_LOG_LEVEL="debug"
+# export FZF_DEFAULT_OPTS='--height=40% --layout=reverse --info=inline --border --margin=1 --padding=1'
+#export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border=rounded --preview "bat --style=numbers,changes --wrap never --color always {} || cat {}" --preview-window "right:60%:wrap" --bind "?:toggle-preview,ctrl-u:preview-page-up,ctrl-d:preview-page-down"'
+#export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git --exclude .idea {}'
+#export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+#export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git --exclude .idea'
 
-zinit snippet OMZP::z
+#FZF_ALT_C_COMMAND='fd -t d .'
+#FZF_CTRL_R_OPTS='--preview ''echo {}'' --preview-window down:3:hidden:wrap --bind ''?:toggle-preview'''
+#FZF_CTRL_T_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*" 2> /dev/null'
+#FZF_CTRL_T_OPTS='--preview ''(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'''
 
-zinit ice from"gh-r" as"program" \
-  cp"posh-* -> oh-my-posh" \
-  pick"oh-my-posh"
-zinit light JanDeDobbeleer/oh-my-posh
+#
+# Colors
+#
+export black='\e[0;30m'
+export blue='\e[0;34m'
+export green='\e[0;32m'
+export cyan='\e[0;36m'
+export red='\e[0;31m'
+export purple='\e[0;35m'
+export brown='\e[0;33m'
+export lightgray='\e[0;37m'
+export darkgray='\e[1;30m'
+export lightblue='\e[1;34m'
+export lightgreen='\e[1;32m'
+export lightcyan='\e[1;36m'
+export lightred='\e[1;31m'
+export lightpurple='\e[1;35m'
+export yellow='\e[1;33m'
+export white='\e[1;37m'
+export nc='\e[0m'
 
-#zinit ice wait'0' blockf lucid
-#zinit light zsh-users/zsh-completions
-zinit ice blockf atpull'zinit creinstall -q .'
-zinit light zsh-users/zsh-completions
+#
+# Prompt
+#
+zinit lucid from'gh-r' as'null' for \
+    id-as'oh-my-posh' \
+        mv'posh-* -> oh-my-posh' \
+        sbin"oh-my-posh" \
+        atload'eval "$(oh-my-posh init zsh --config ${HOME}/.zsh/themes/theme.omp.json)"' \
+        @JanDeDobbeleer/oh-my-posh
 
-zinit light zdharma-continuum/fast-syntax-highlighting
-zinit light zsh-users/zsh-autosuggestions
+#
+# Oh My Zsh libs
+# https://github.com/ohmyzsh/ohmyzsh/tree/master/lib
+#
+zinit light-mode for \
+    OMZL::clipboard.zsh \
+    OMZL::completion.zsh \
+    OMZL::correction.zsh \
+    OMZL::functions.zsh \
+    OMZL::git.zsh \
+    OMZL::grep.zsh \
+    OMZL::key-bindings.zsh \
+    OMZL::spectrum.zsh \
+    OMZL::termsupport.zsh
 
-# https://github.com/zdharma-continuum/zinit-packages/tree/main/fzf
-zinit pack"bgn-binary+keys" for fzf
+#
+# Programs
+#
+zinit as'null' depth'1' wait'0a' lucid from='gh-r' light-mode for \
+    id-as'fzf' \
+        sbin'fzf' \
+        atclone'./fzf --zsh > fzf.zsh' \
+        atpull'%atclone' \
+        src'fzf.zsh' \
+        @junegunn/fzf \
+    id-as'zoxide' \
+        sbin'**/zoxide' \
+        atclone'./zoxide init zsh > init.zsh && mv completions/_zoxide . && zinit creinstall -q .' \
+        atpull'%atclone' \
+        src'init.zsh' \
+        nocompile'!' \
+        @ajeetdsouza/zoxide \
+    id-as'lsd' \
+        sbin"lsd" \
+        atclone'mv lsd*/autocomplete/_lsd . && zinit creinstall -q .' \
+        atpull'%atclone' \
+        @lsd-rs/lsd \
+    id-as'bat' \
+        sbin"**/bat" \
+        atclone'mv bat*/autocomplete/bat.zsh _bat && zinit creinstall -q .' \
+        atpull'%atclone' \
+        atload'export MANPAGER="bat --plain"' \
+        @sharkdp/bat \
+    id-as'fd' \
+        sbin"**/fd" \
+        atclone'mv fd*/autocomplete/_fd . && zinit creinstall -q .' \
+        atpull'%atclone' \
+        @sharkdp/fd \
+    id-as'delta' \
+        sbin'**/delta' \
+        atclone'./*/delta --generate-completion zsh > _delta && zinit creinstall -q .' \
+        atpull'%atclone' \
+        @dandavison/delta \
+    id-as'ripgrep' \
+        sbin'**/rg' \
+        atclone'mv ripgrep*/complete/_rg . && zinit creinstall -q .' \
+        atpull'%atclone' \
+        @BurntSushi/ripgrep \
+    id-as'dust' \
+        sbin'**/dust' \
+        @bootandy/dust \
+    id-as'glow' \
+        sbin'**/glow' \
+        atclone'mv glow*/completions/glow.zsh _glow && zinit creinstall -q .' \
+        atpull'%atclone' \
+        @charmbracelet/glow  \
+    id-as'jq' \
+        sbin'* -> jq' \
+        nocompile \
+        @jqlang/jq \
+    id-as'xplr' \
+        sbin'**/xplr' \
+        bpick'*-linux.tar.gz' \
+        @sayanarijit/xplr \
+    id-as'doggo' \
+        sbin'**/doggo' \
+        atclone'./do*/doggo completions zsh > _doggo && zinit creinstall -q .' \
+        atpull'%atclone' \
+        nocompile \
+        @mr-karan/doggo \
+    id-as'hyperfine' \
+        sbin'**/hyperfine' \
+        atclone'mv hy*/autocomplete/_hyperfine . && zinit creinstall -q .' \
+        atpull'%atclone' \
+        @sharkdp/hyperfine \
+    id-as'age' \
+        sbin'**/age*' \
+        @FiloSottile/age
 
-zinit ice depth"1" \
-  pick"shell_integration/zsh" \
-  sbin"utilities/*" if"[[ $+ITERM_PROFILE ]]"
-zinit load gnachman/iTerm2-shell-integration
+#
+# Missing completions for plugins
+#
+zinit as'completion' depth'1' wait'0a' lucid for \
+    https://raw.githubusercontent.com/bootandy/dust/refs/heads/master/completions/_dust
 
-# https://github.com/zdharma-continuum/zinit-packages/tree/main/dircolors-material
-# zinit pack"no-color-swaps" for dircolors-material
+#
+# Oh My Zsh plugins
+# https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins
+# 
+zinit wait'0b' lucid light-mode for \
+    OMZP::catimg \
+    OMZP::command-not-found \
+    OMZP::extract \
+    OMZP::safe-paste \
+    OMZP::ssh-agent \
+    OMZP::systemd
 
-# https://github.com/zdharma-continuum/zinit-packages/tree/main/ls_colors
-zinit pack"no-color-swaps" for dircolors-material
+#
+# Plugins
+#
+zinit depth'1' wait'0c' lucid light-mode for \
+    id-as'alias-tips' \
+        @djui/alias-tips \
+    id-as'toggle-command-prefix' \
+        @xPMo/zsh-toggle-command-prefix
 
-# Completion
-zinit snippet PZT::modules/completion/init.zsh
+zinit depth'1' wait'0d' lucid light-mode for \
+    id-as'fast-syntax-highlighting' \
+        @zdharma-continuum/fast-syntax-highlighting \
+    id-as'zsh-autosuggestions' \
+        atload'!_zsh_autosuggest_start' \
+        @zsh-users/zsh-autosuggestions
 
-# End Profiler
-if [[ "${ZSH_PROFILE}" == 1 ]]; then
-  zprof | less
+zinit depth'1' wait'0e' lucid light-mode for \
+    id-as'zsh-completions' \
+        blockf \
+        atpull'zinit creinstall -q .' \
+        atload'zicompinit; zicdreplay' \
+        @zsh-users/zsh-completions
+
+#
+# Disable highlighting of text pasted into the command line
+#
+zle_highlight=('paste:none')
+
+#
+# Settings
+#
+zstyle :omz:plugins:ssh-agent agent-forwarding yes
+zstyle :omz:plugins:ssh-agent lazy yes
+
+#
+# Aliasses
+#
+alias ls='lsd'
+alias ll='lsd -alFhg --header --date +"%d %b %Y %T" --git'
+
+#
+# Functions
+#
+function mktar() {
+  tar cvf  "${1%%/}.tar" "${1%%/}/";
+}
+
+# Create a tar.gz archive from given directory
+function mktgz() {
+  tar cvzf "${1%%/}.tar.gz" "${1%%/}/";
+}
+
+# Create a tar.bz2 archive from given directory
+function mktbz() {
+  tar cvjf "${1%%/}.tar.bz2" "${1%%/}/";
+}
+
+function upinfo () {
+  echo -ne "\t ";uptime | awk /'up/ {print $3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13}'
+}
+
+#
+# Allow Midnight Commander to quit into last used directory
+#
+if [[ -d "/opt/homebrew/Cellar" ]]; then
+    . /opt/homebrew/Cellar/midnight-commander/**/libexec/mc/mc.sh
+elif [[ -d "/usr/local/Cellar/midnight-commander" ]]; then
+    . /usr/local/Cellar/midnight-commander/**/libexec/mc/mc.sh
+elif [[ -f "/usr/local/mc/share/mc/bin/mc.sh" ]]; then
+    . /usr/local/mc/share/mc/bin/mc.sh
+elif [[ -f "/usr/local/share/mc/bin/mc.sh" ]]; then
+    . /usr/local/share/mc/bin/mc.sh
+elif [[ -f "/usr/share/mc/bin/mc.sh" ]]; then
+    . /usr/share/mc/bin/mc.sh
+elif [[ -f "/usr/lib/mc/mc.sh" ]]; then
+    . /usr/lib/mc/mc.sh
 fi
 
-# FZF {{{
-export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*" 2> /dev/null'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_ALT_C_COMMAND="fd -t d ."
-export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
-export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
-# }}}
-
-export HOMEBREW_NO_ANALYTICS=1
-export KEYTIMEOUT=1
-
-for file in ${HOME}/.zsh/*.zsh; do
-  source $file
-done
+# https://wiki.archlinux.org/index.php/zsh#Persistent_rehash
+zstyle ':completion:*' rehash true
 
 # Welcome
 if type "cowsay" > /dev/null; then
-  if type "fortune" > /dev/null; then
-    if type "clear" > /dev/null; then
-      clear
+    if type "fortune" > /dev/null; then
+        if type "clear" > /dev/null; then
+            clear
+        fi
+
+        fortune -s | cowsay -W 80 -f moose -y
+        echo -e "${red}Host:\t\t\t${cyan} $HOSTNAME";
+        echo -ne "${red}Today is:\t\t${cyan}" `date`; echo ""
+        echo -e "${red}Kernel Information: \t${cyan}" `uname -smr`
+        echo -ne "${red}Uptime is: \t${cyan}"; upinfo; echo ""
     fi
-	
-    fortune -s | cowsay -W 80 -f moose -y
-    echo -e "${red}Host:\t\t\t${cyan} $HOSTNAME";
-    echo -ne "${red}Today is:\t\t${cyan}" `date`; echo ""
-    echo -e "${red}Kernel Information: \t${cyan}" `uname -smr`
-    echo -ne "${red}Uptime is: \t${cyan}"; upinfo; echo ""
-  fi
 fi
+
+# zprof
