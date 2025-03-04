@@ -53,7 +53,8 @@ setopt share_history
 export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow --exclude .git --exclude .idea"
 export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
 export FZF_ALT_C_COMMAND="fd -t d ."
-export FZF_CTRL_T_OPTS="--preview '(bat --style=numbers,changes --wrap never --color always {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200' --bind '?:toggle-preview'"
+#export FZF_CTRL_T_OPTS="--preview '(bat --style=numbers,changes --wrap never --color always {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200' --bind '?:toggle-preview'"
+export FZF_CTRL_T_OPTS="--preview '(bat --style=numbers,changes --wrap never --color always {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200' --bind '?:toggle-preview' --bind 'enter:execute(vim {+} < /dev/tty)+abort'"
 #export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:5:hidden:wrap --bind '?:toggle-preview' --bind 'ctrl-y:execute-silent(echo -n {2..} | xclip -selection clipboard)+abort' --color header:italic --header 'Press CTRL-Y to copy command into clipboard'"
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:5:hidden:wrap --bind '?:toggle-preview' --bind 'ctrl-y:execute-silent(echo -n {2..} | clip.exe)+abort' --color header:italic --header 'Press CTRL-Y to copy command into clipboard'"
 
@@ -249,6 +250,8 @@ zstyle :omz:plugins:ssh-agent lazy yes
 #
 alias ls='lsd'
 alias ll='lsd -alFhg --header --date +"%d %b %Y %T" --git'
+
+export EDITOR="vim"
 
 #
 # Functions
