@@ -18,6 +18,7 @@ path=(
   /opt/{homebrew,local}/{,s}bin(N)
   /usr/local/{,s}bin(N)
   /usr/games
+  ${ASDF_DATA_DIR:-$HOME/.asdf}/shims
   $path
 )
 
@@ -28,9 +29,9 @@ fpath=(
 
 # Editor
 export VISUAL=vim
-if command -v micro > /dev/null 2>&1; then
-  export VISUAL=micro
-fi
+#if command -v micro > /dev/null 2>&1; then
+#  export VISUAL=micro
+#fi
 export EDITOR=$VISUAL
 
 # Setup ZSH cache directory

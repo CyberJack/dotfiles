@@ -191,7 +191,11 @@ zinit as'null' depth'1' wait'0a' lucid from='gh-r' light-mode for \
         @sharkdp/hyperfine \
     id-as'age' \
         sbin'**/age*' \
-        @FiloSottile/age
+        @FiloSottile/age \
+    id-as'asdf' \
+        sbin'asdf' \
+        atclone'./*sdf completion zsh > _asdf && zinit creinstall -q .' \
+        @asdf-vm/asdf
 
 #
 # Missing completions for plugins
