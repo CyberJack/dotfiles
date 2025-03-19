@@ -53,25 +53,8 @@ setopt share_history
 export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow --exclude .git --exclude .idea"
 export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
 export FZF_ALT_C_COMMAND="fd -t d ."
-#export FZF_CTRL_T_OPTS="--preview '(bat --style=numbers,changes --wrap never --color always {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200' --bind '?:toggle-preview'"
 export FZF_CTRL_T_OPTS="--preview '(bat --style=numbers,changes --wrap never --color always {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200' --bind '?:toggle-preview' --bind 'enter:execute(vim {+} < /dev/tty)+abort'"
-#export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:5:hidden:wrap --bind '?:toggle-preview' --bind 'ctrl-y:execute-silent(echo -n {2..} | xclip -selection clipboard)+abort' --color header:italic --header 'Press CTRL-Y to copy command into clipboard'"
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:5:hidden:wrap --bind '?:toggle-preview' --bind 'ctrl-y:execute-silent(echo -n {2..} | clip.exe)+abort' --color header:italic --header 'Press CTRL-Y to copy command into clipboard'"
-
-#export FZF_CTRL_T_OPTS="--preview '(bat --style=numbers,changes --wrap never --color always {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200' --bind '?:toggle-preview'"
-#export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
-
-#export FZF_LOG_LEVEL="debug"
-# export FZF_DEFAULT_OPTS='--height=40% --layout=reverse --info=inline --border --margin=1 --padding=1'
-#export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border=rounded --preview "bat --style=numbers,changes --wrap never --color always {} || cat {}" --preview-window "right:60%:wrap" --bind "?:toggle-preview,ctrl-u:preview-page-up,ctrl-d:preview-page-down"'
-#export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git --exclude .idea {}'
-#export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-#export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git --exclude .idea'
-
-#FZF_ALT_C_COMMAND='fd -t d .'
-#FZF_CTRL_R_OPTS='--preview ''echo {}'' --preview-window down:3:hidden:wrap --bind ''?:toggle-preview'''
-#FZF_CTRL_T_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*" 2> /dev/null'
-#FZF_CTRL_T_OPTS='--preview ''(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'''
 
 #
 # Colors
@@ -246,8 +229,12 @@ zle_highlight=('paste:none')
 #
 # Settings
 #
+autoload -U url-quote-magic
+zle -N self-insert url-quote-magic
+
 zstyle :omz:plugins:ssh-agent agent-forwarding yes
 zstyle :omz:plugins:ssh-agent lazy yes
+zstyle ':bracketed-paste-magic' active-widgets '.self-*'
 
 #
 # Aliasses
