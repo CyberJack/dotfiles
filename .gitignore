@@ -2,7 +2,6 @@
 /.env
 /.cache/
 /.local/
-/.config/
 
 /.zsh_history
 /.zcompdump

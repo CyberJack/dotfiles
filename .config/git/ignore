@@ -1,0 +1,12 @@
+###
+# Jetbrains applications
+###
+.idea/
+
+###
+# MacOS
+###
+.DS_Store
+.AppleDouble
+.LSOverride
+
