@@ -157,10 +157,9 @@ zinit as'null' depth'1' wait'0a' lucid from='gh-r' light-mode for \
         sbin'* -> jq' \
         nocompile \
         @jqlang/jq \
-    id-as'xplr' \
-        sbin'**/xplr' \
-        bpick'*-linux.tar.gz' \
-        @sayanarijit/xplr \
+    id-as'superfile' \
+        sbin'**/spf' \
+        @yorukot/superfile \
     id-as'doggo' \
         sbin'**/doggo' \
         atclone'./do*/doggo completions zsh > _doggo && zinit creinstall -q .' \
@@ -247,40 +246,7 @@ export EDITOR="vim"
 #
 # Functions
 #
-function mktar() {
-  tar cvf  "${1%%/}.tar" "${1%%/}/";
-}
-
-# Create a tar.gz archive from given directory
-function mktgz() {
-  tar cvzf "${1%%/}.tar.gz" "${1%%/}/";
-}
-
-# Create a tar.bz2 archive from given directory
-function mktbz() {
-  tar cvjf "${1%%/}.tar.bz2" "${1%%/}/";
-}
-
-function upinfo () {
-  echo -ne "\t ";uptime | awk /'up/ {print $3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13}'
-}
-
-#
-# Allow Midnight Commander to quit into last used directory
-#
-if [[ -d "/opt/homebrew/Cellar" ]]; then
-    . /opt/homebrew/Cellar/midnight-commander/**/libexec/mc/mc.sh
-elif [[ -d "/usr/local/Cellar/midnight-commander" ]]; then
-    . /usr/local/Cellar/midnight-commander/**/libexec/mc/mc.sh
-elif [[ -f "/usr/local/mc/share/mc/bin/mc.sh" ]]; then
-    . /usr/local/mc/share/mc/bin/mc.sh
-elif [[ -f "/usr/local/share/mc/bin/mc.sh" ]]; then
-    . /usr/local/share/mc/bin/mc.sh
-elif [[ -f "/usr/share/mc/bin/mc.sh" ]]; then
-    . /usr/share/mc/bin/mc.sh
-elif [[ -f "/usr/lib/mc/mc.sh" ]]; then
-    . /usr/lib/mc/mc.sh
-fi
+[[ -f ${HOME}/.zsh/functions.zsh ]] && source ${HOME}/.zsh/functions.zsh
 
 # https://wiki.archlinux.org/index.php/zsh#Persistent_rehash
 zstyle ':completion:*' rehash true
@@ -288,9 +254,9 @@ zstyle ':completion:*' rehash true
 # Welcome
 if type "cowsay" > /dev/null; then
     if type "fortune" > /dev/null; then
-        if type "clear" > /dev/null; then
-            clear
-        fi
+#        if type "clear" > /dev/null; then
+#            clear
+#        fi
 
         fortune -s | cowsay -W 80 -f moose -y
         echo -e "${red}Host:\t\t\t${cyan} $HOSTNAME";
