@@ -106,78 +106,81 @@ zinit light-mode for \
 # Programs
 #
 zinit as'null' depth'1' wait'0a' lucid from='gh-r' light-mode for \
-    id-as'fzf' \
-        sbin'fzf' \
-        atclone'./fzf --zsh > fzf.zsh' \
-        atpull'%atclone' \
-        src'fzf.zsh' \
-        @junegunn/fzf \
-    id-as'zoxide' \
-        sbin'**/zoxide' \
-        atclone'./zoxide init zsh > init.zsh && mv completions/_zoxide . && zinit creinstall -q .' \
-        atpull'%atclone' \
-        src'init.zsh' \
-        nocompile'!' \
-        @ajeetdsouza/zoxide \
-    id-as'lsd' \
-        sbin"lsd" \
-        atclone'mv lsd*/autocomplete/_lsd . && zinit creinstall -q .' \
-        atpull'%atclone' \
-        @lsd-rs/lsd \
-    id-as'bat' \
-        sbin"**/bat" \
-        atclone'mv bat*/autocomplete/bat.zsh _bat && zinit creinstall -q .' \
-        atpull'%atclone' \
-        atload'export MANPAGER="bat --plain"' \
-        @sharkdp/bat \
-    id-as'fd' \
-        sbin"**/fd" \
-        atclone'mv fd*/autocomplete/_fd . && zinit creinstall -q .' \
-        atpull'%atclone' \
-        @sharkdp/fd \
-    id-as'delta' \
-        sbin'**/delta' \
-        atclone'./*/delta --generate-completion zsh > _delta && zinit creinstall -q .' \
-        atpull'%atclone' \
-        @dandavison/delta \
-    id-as'ripgrep' \
-        sbin'**/rg' \
-        atclone'mv ripgrep*/complete/_rg . && zinit creinstall -q .' \
-        atpull'%atclone' \
-        @BurntSushi/ripgrep \
-    id-as'dust' \
-        sbin'**/dust' \
-        @bootandy/dust \
-    id-as'glow' \
-        sbin'**/glow' \
-        atclone'mv glow*/completions/glow.zsh _glow && zinit creinstall -q .' \
-        atpull'%atclone' \
-        @charmbracelet/glow  \
-    id-as'jq' \
-        sbin'* -> jq' \
-        nocompile \
-        @jqlang/jq \
-    id-as'superfile' \
-        sbin'**/spf' \
-        @yorukot/superfile \
-    id-as'doggo' \
-        sbin'**/doggo' \
-        atclone'./do*/doggo completions zsh > _doggo && zinit creinstall -q .' \
-        atpull'%atclone' \
-        nocompile \
-        @mr-karan/doggo \
-    id-as'hyperfine' \
-        sbin'**/hyperfine' \
-        atclone'mv hy*/autocomplete/_hyperfine . && zinit creinstall -q .' \
-        atpull'%atclone' \
-        @sharkdp/hyperfine \
     id-as'age' \
         sbin'**/age*' \
         @FiloSottile/age \
     id-as'asdf' \
         sbin'asdf' \
         atclone'./*sdf completion zsh > _asdf && zinit creinstall -q .' \
-        @asdf-vm/asdf
+        @asdf-vm/asdf \
+    id-as'bat' \
+        sbin"**/bat" \
+        atclone'mv bat*/autocomplete/bat.zsh _bat && zinit creinstall -q .' \
+        atpull'%atclone' \
+        atload'export MANPAGER="bat --plain"' \
+        @sharkdp/bat \
+    id-as'delta' \
+        sbin'**/delta' \
+        atclone'./*/delta --generate-completion zsh > _delta && zinit creinstall -q .' \
+        atpull'%atclone' \
+        @dandavison/delta \
+    id-as'doggo' \
+        sbin'**/doggo' \
+        atclone'./do*/doggo completions zsh > _doggo && zinit creinstall -q .' \
+        atpull'%atclone' \
+        nocompile \
+        @mr-karan/doggo \
+    id-as'duf' \
+        sbin'**/duf' \
+        @muesli/duf \
+    id-as'dust' \
+        sbin'**/dust' \
+        @bootandy/dust \
+    id-as'fd' \
+        sbin"**/fd" \
+        atclone'mv fd*/autocomplete/_fd . && zinit creinstall -q .' \
+        atpull'%atclone' \
+        @sharkdp/fd \
+    id-as'fzf' \
+        sbin'fzf' \
+        atclone'./fzf --zsh > fzf.zsh' \
+        atpull'%atclone' \
+        src'fzf.zsh' \
+        @junegunn/fzf \
+    id-as'glow' \
+        sbin'**/glow' \
+        atclone'mv glow*/completions/glow.zsh _glow && zinit creinstall -q .' \
+        atpull'%atclone' \
+        @charmbracelet/glow  \
+    id-as'hyperfine' \
+        sbin'**/hyperfine' \
+        atclone'mv hy*/autocomplete/_hyperfine . && zinit creinstall -q .' \
+        atpull'%atclone' \
+        @sharkdp/hyperfine \
+    id-as'jq' \
+        sbin'* -> jq' \
+        nocompile \
+        @jqlang/jq \
+    id-as'lsd' \
+        sbin"lsd" \
+        atclone'mv lsd*/autocomplete/_lsd . && zinit creinstall -q .' \
+        atpull'%atclone' \
+        @lsd-rs/lsd \
+    id-as'ripgrep' \
+        sbin'**/rg' \
+        atclone'mv ripgrep*/complete/_rg . && zinit creinstall -q .' \
+        atpull'%atclone' \
+        @BurntSushi/ripgrep \
+    id-as'superfile' \
+        sbin'**/spf' \
+        @yorukot/superfile \
+    id-as'zoxide' \
+        sbin'**/zoxide' \
+        atclone'./zoxide init zsh > init.zsh && mv completions/_zoxide . && zinit creinstall -q .' \
+        atpull'%atclone' \
+        src'init.zsh' \
+        nocompile'!' \
+        @ajeetdsouza/zoxide
 
 #
 # Missing completions for plugins
