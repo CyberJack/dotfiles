@@ -166,6 +166,9 @@ zinit as'null' depth'1' wait'0a' lucid from='gh-r' light-mode for \
         atclone'mv lsd*/autocomplete/_lsd . && zinit creinstall -q .' \
         atpull'%atclone' \
         @lsd-rs/lsd \
+    id-as'micro' \
+        sbin"**/micro" \
+        @zyedidia/micro \
     id-as'ripgrep' \
         sbin'**/rg' \
         atclone'mv ripgrep*/complete/_rg . && zinit creinstall -q .' \
